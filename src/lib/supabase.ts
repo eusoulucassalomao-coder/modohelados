@@ -83,6 +83,35 @@ export async function insertRow<T>(table: string, values: Record<string, unknown
     method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(values),
   });
 }
+
+export async function uploadProductImage(file: File, productId: string) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Supabase no está configurado.");
+  const session = readSession();
+  if (!session?.access_token) throw new Error("Tu sesión expiró. Iniciá sesión nuevamente.");
+  const allowedTypes: Record<string, string> = {
+    "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp",
+  };
+  const extension = allowedTypes[file.type];
+  if (!extension) throw new Error("Usá una imagen JPG, PNG o WebP.");
+  if (file.size > 5 * 1024 * 1024) throw new Error("La imagen no puede superar los 5 MB.");
+  const path = `${encodeURIComponent(productId)}-${Date.now()}.${extension}`;
+  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/product-images/${path}`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${session.access_token}`,
+      "Content-Type": file.type,
+      "x-upsert": "false",
+      "Cache-Control": "3600",
+    },
+    body: file,
+  });
+  const body = await response.text();
+  const data = body ? JSON.parse(body) : null;
+  if (!response.ok) throw new Error(data?.message || data?.error || "No se pudo subir la imagen.");
+  return `${SUPABASE_URL}/storage/v1/object/public/product-images/${path}`;
+}
+
 export async function callRpc<T>(name: string, args: Record<string, unknown>) {
   return request<T>(`/rest/v1/rpc/${name}`, { method: "POST", body: JSON.stringify(args) });
 }
