@@ -117,7 +117,7 @@
 }
 
 @layer base {
-  body { background-image: var(--gradient-hero); background-attachment: fixed; font-family: var(--font-sans); }
+  body { background-image: url("/images/palm-texture.svg"), var(--gradient-hero); background-repeat: repeat, no-repeat; background-size: 520px 520px, cover; background-blend-mode: multiply, normal; background-attachment: fixed; font-family: var(--font-sans); }
   h1, h2, h3 { font-family: var(--font-display); }
 }
 @utility bg-hero { background-image: var(--gradient-hero); }
