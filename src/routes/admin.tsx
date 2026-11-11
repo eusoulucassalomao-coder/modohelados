@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BarChart3, Boxes, ClipboardList, LogOut, Package, RefreshCw, Users } from "lucide-react";
-import { getCurrentUser, getSession, isSupabaseConfigured, selectRows, signIn, signOut, updateRow, type AuthUser } from "@/lib/supabase";
+import { BarChart3, Boxes, ClipboardList, LogOut, Package, RefreshCw, Users, Pencil, X, ImagePlus } from "lucide-react";
+import { getCurrentUser, getSession, isSupabaseConfigured, selectRows, signIn, signOut, updateRow, uploadProductImage, type AuthUser } from "@/lib/supabase";
 import { money } from "@/lib/i18n";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
@@ -42,6 +42,13 @@ function AdminPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [customerFilter, setCustomerFilter] = useState<"all" | "recent" | "inactive">("all");
   const [error, setError] = useState("");
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editNameEs, setEditNameEs] = useState("");
+  const [editNameEn, setEditNameEn] = useState("");
+  const [editDescriptionEs, setEditDescriptionEs] = useState("");
+  const [editDescriptionEn, setEditDescriptionEn] = useState("");
+  const [editImage, setEditImage] = useState<File | null>(null);
+  const [savingProduct, setSavingProduct] = useState(false);
 
   const load = useCallback(async () => {
     setError("");
@@ -140,6 +147,42 @@ function AdminPage() {
     } catch (e) { setError(e instanceof Error ? e.message : "No se pudo actualizar el producto."); }
   };
 
+  const openProductEditor = (product: Product) => {
+    setEditingProduct(product);
+    setEditNameEs(product.name?.es || "");
+    setEditNameEn(product.name?.en || "");
+    setEditDescriptionEs(product.description?.es || "");
+    setEditDescriptionEn(product.description?.en || "");
+    setEditImage(null);
+    setError("");
+  };
+
+  const saveProductDetails = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!editingProduct) return;
+    if (!editNameEs.trim() || !editNameEn.trim()) {
+      setError("Completá el nombre del producto en español e inglés.");
+      return;
+    }
+    setSavingProduct(true);
+    setError("");
+    try {
+      const values: Partial<Product> = {
+        name: { es: editNameEs.trim(), en: editNameEn.trim() },
+        description: { es: editDescriptionEs.trim(), en: editDescriptionEn.trim() },
+      };
+      if (editImage) values.image_url = await uploadProductImage(editImage, editingProduct.id);
+      const updated = await updateRow<Product>("products", { id: `eq.${editingProduct.id}` }, values);
+      setProducts((old) => old.map((p) => p.id === editingProduct.id ? { ...p, ...values, ...(updated[0] || {}) } : p));
+      setEditingProduct(null);
+      setEditImage(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudieron guardar los cambios del producto.");
+    } finally {
+      setSavingProduct(false);
+    }
+  };
+
   const logout = async () => { await signOut(); setUser(null); setAuthorized(false); };
 
   if (!isSupabaseConfigured) return <Shell><Notice>Configurá VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en las variables de entorno de Vercel para habilitar el panel.</Notice></Shell>;
@@ -195,6 +238,7 @@ function AdminPage() {
       <label className="flex items-center gap-2 text-sm"><span className="text-white/50">$</span><input type="number" min="0" step="50" defaultValue={product.price} onBlur={(e)=>{const v=Number(e.target.value);if(Number.isFinite(v)&&v>=0&&v!==product.price)void changeProduct(product,{price:v});}} className="w-24 rounded-lg border border-white/10 bg-black/20 px-2 py-2"/></label>
       <label className="flex items-center gap-2 text-xs text-amber-300"><input type="checkbox" checked={product.featured} onChange={(e)=>void changeProduct(product,{featured:e.target.checked})}/> Oferta del día</label>
       <label className="flex items-center gap-2 text-xs text-white/60"><input type="checkbox" checked={product.available} onChange={(e)=>void changeProduct(product,{available:e.target.checked})}/> Disponible</label>
+      <button type="button" onClick={() => openProductEditor(product)} className="flex items-center gap-2 rounded-lg border border-lime-300/30 px-3 py-2 text-xs font-bold text-lime-300 hover:bg-lime-300/10"><Pencil size={14}/> Editar</button>
     </article>)}</div></section>}
     {tab === "customers" && <section>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-xl font-bold">Clientes · {customers.length}</h2><p className="mt-1 text-xs text-white/45">Clasificación según la última compra registrada</p></div><button onClick={() => void load()} className="rounded-lg border border-white/10 px-3 py-2 text-xs text-white/65 hover:bg-white/5">Actualizar clientes</button></div>
@@ -213,6 +257,32 @@ function AdminPage() {
         return <article key={customer.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4"><div className="min-w-0"><p className="font-bold">{customer.name}</p><p className="text-sm text-white/55">{customer.phone}</p><p className="text-xs text-white/35">{customer.default_address||"Sin dirección guardada"}</p><p className="mt-1 text-xs text-white/50">{lastOrderLabel}</p></div><div className="flex items-center gap-3"><span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${inactive ? "bg-amber-500/15 text-amber-300" : days === null ? "bg-white/10 text-white/50" : "bg-emerald-500/15 text-emerald-300"}`}>{inactive ? `${days} días sin comprar` : days === null ? "Sin fecha" : "Reciente"}</span><a className="text-sm font-semibold text-lime-300" href={`https://wa.me/${customer.phone.replace(/\D/g,"")}`} target="_blank" rel="noreferrer">Contactar ↗</a></div></article>;
       })}</div>}
     </section>}
+    {editingProduct && <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/75 p-4" role="dialog" aria-modal="true" aria-labelledby="edit-product-title">
+      <form onSubmit={saveProductDetails} className="my-auto w-full max-w-2xl rounded-3xl border border-white/10 bg-[#171a14] p-5 shadow-2xl sm:p-7">
+        <div className="mb-5 flex items-start justify-between gap-3">
+          <div><p className="text-xs font-bold uppercase tracking-[.18em] text-lime-300">Catálogo</p><h2 id="edit-product-title" className="mt-1 text-2xl font-extrabold">Editar producto</h2><p className="mt-1 text-sm text-white/50">{editingProduct.name?.es || editingProduct.id}</p></div>
+          <button type="button" onClick={() => setEditingProduct(null)} className="rounded-xl border border-white/10 p-2 text-white/60 hover:bg-white/5" aria-label="Cerrar"><X size={18}/></button>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="text-sm text-white/70">Nombre (español)<input required value={editNameEs} onChange={(e)=>setEditNameEs(e.target.value)} className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-lime-300"/></label>
+          <label className="text-sm text-white/70">Nombre (inglés)<input required value={editNameEn} onChange={(e)=>setEditNameEn(e.target.value)} className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-lime-300"/></label>
+          <label className="text-sm text-white/70 sm:col-span-2">Descripción (español)<textarea rows={3} value={editDescriptionEs} onChange={(e)=>setEditDescriptionEs(e.target.value)} className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-lime-300"/></label>
+          <label className="text-sm text-white/70 sm:col-span-2">Descripción (inglés)<textarea rows={3} value={editDescriptionEn} onChange={(e)=>setEditDescriptionEn(e.target.value)} className="mt-1 w-full rounded-xl border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-lime-300"/></label>
+        </div>
+        <div className="mt-4 rounded-2xl border border-white/10 bg-black/15 p-4">
+          <div className="flex items-center gap-3">
+            {editingProduct.image_url ? <img src={editingProduct.image_url} alt="" className="h-16 w-16 rounded-xl object-cover"/> : <div className="grid h-16 w-16 place-items-center rounded-xl bg-white/5"><ImagePlus/></div>}
+            <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Foto del producto</p><p className="text-xs text-white/45">JPG, PNG o WebP · máximo 5 MB</p></div>
+          </div>
+          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e)=>setEditImage(e.target.files?.[0] || null)} className="mt-3 block w-full text-sm text-white/65 file:mr-3 file:rounded-lg file:border-0 file:bg-lime-300 file:px-3 file:py-2 file:font-bold file:text-zinc-950"/>
+          {editImage && <p className="mt-2 text-xs text-lime-300">Nueva imagen: {editImage.name}</p>}
+        </div>
+        <div className="mt-6 flex flex-wrap justify-end gap-2">
+          <button type="button" onClick={()=>setEditingProduct(null)} disabled={savingProduct} className="rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold text-white/70 hover:bg-white/5">Cancelar</button>
+          <button type="submit" disabled={savingProduct} className="rounded-xl bg-lime-300 px-5 py-3 text-sm font-extrabold text-zinc-950 disabled:opacity-50">{savingProduct ? "Guardando..." : "Guardar cambios"}</button>
+        </div>
+      </form>
+    </div>}
     <footer className="mt-10 border-t border-white/10 pt-4 text-xs text-white/35">Panel privado · Los datos se consultan directamente desde Supabase.</footer>
   </Shell>;
 }
