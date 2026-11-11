@@ -77,32 +77,32 @@
 
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.17 0.06 320);
-  --foreground: oklch(0.97 0.02 330);
-  --card: oklch(0.23 0.08 320);
-  --card-foreground: oklch(0.97 0.02 330);
-  --popover: oklch(0.22 0.08 320);
-  --popover-foreground: oklch(0.97 0.02 330);
-  --primary: oklch(0.86 0.19 128);
-  --primary-foreground: oklch(0.2 0.07 320);
-  --secondary: oklch(0.3 0.1 320);
-  --secondary-foreground: oklch(0.97 0.02 330);
-  --muted: oklch(0.27 0.07 320);
-  --muted-foreground: oklch(0.75 0.06 330);
-  --accent: oklch(0.72 0.2 350);
-  --accent-foreground: oklch(0.99 0 0);
+  --background: oklch(0.98 0.018 88);
+  --foreground: oklch(0.25 0.075 315);
+  --card: oklch(0.995 0.006 88);
+  --card-foreground: oklch(0.25 0.075 315);
+  --popover: oklch(0.995 0.006 88);
+  --popover-foreground: oklch(0.25 0.075 315);
+  --primary: oklch(0.39 0.16 310);
+  --primary-foreground: oklch(0.99 0.01 90);
+  --secondary: oklch(0.94 0.035 315);
+  --secondary-foreground: oklch(0.3 0.09 315);
+  --muted: oklch(0.95 0.02 90);
+  --muted-foreground: oklch(0.54 0.045 315);
+  --accent: oklch(0.88 0.17 92);
+  --accent-foreground: oklch(0.28 0.09 310);
   --destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.86 0.19 128);
-  --chart-1: oklch(0.86 0.19 128); --chart-2: oklch(0.72 0.2 350); --chart-3: oklch(0.5 0.2 320); --chart-4: oklch(0.8 0.15 80); --chart-5: oklch(0.6 0.1 200);
-  --sidebar: oklch(0.2 0.07 320); --sidebar-foreground: oklch(0.97 0.02 330); --sidebar-primary: oklch(0.86 0.19 128); --sidebar-primary-foreground: oklch(0.2 0.07 320); --sidebar-accent: oklch(0.3 0.1 320); --sidebar-accent-foreground: oklch(0.97 0.02 330); --sidebar-border: oklch(1 0 0 / 10%); --sidebar-ring: oklch(0.86 0.19 128);
+  --border: oklch(0.86 0.035 310);
+  --input: oklch(0.86 0.035 310);
+  --ring: oklch(0.55 0.17 310);
+  --chart-1: oklch(0.55 0.17 310); --chart-2: oklch(0.82 0.16 90); --chart-3: oklch(0.65 0.16 340); --chart-4: oklch(0.7 0.12 60); --chart-5: oklch(0.6 0.1 250);
+  --sidebar: oklch(0.98 0.018 88); --sidebar-foreground: oklch(0.25 0.075 315); --sidebar-primary: oklch(0.39 0.16 310); --sidebar-primary-foreground: oklch(0.99 0.01 90); --sidebar-accent: oklch(0.94 0.035 315); --sidebar-accent-foreground: oklch(0.3 0.09 315); --sidebar-border: oklch(0.86 0.035 310); --sidebar-ring: oklch(0.55 0.17 310);
   --whatsapp: oklch(0.72 0.17 150);
-  --gradient-hero: radial-gradient(120% 80% at 20% 0%, oklch(0.42 0.2 330 / 0.9), transparent 60%), radial-gradient(90% 70% at 100% 30%, oklch(0.55 0.22 350 / 0.45), transparent 60%), linear-gradient(180deg, oklch(0.2 0.08 320), oklch(0.17 0.06 320));
-  --gradient-card: linear-gradient(160deg, oklch(0.26 0.09 322), oklch(0.21 0.07 318));
-  --shadow-glow: 0 18px 50px -12px oklch(0.86 0.19 128 / 0.45);
-  --shadow-card: 0 20px 40px -24px oklch(0.05 0.05 320 / 0.9);
+  --gradient-hero: radial-gradient(70% 35% at 8% 0%, oklch(0.94 0.055 310 / .55), transparent 70%), radial-gradient(60% 35% at 100% 12%, oklch(0.95 0.07 90 / .32), transparent 72%), linear-gradient(180deg, oklch(0.985 0.015 88), oklch(0.965 0.025 88));
+  --gradient-card: linear-gradient(160deg, oklch(0.995 0.006 88), oklch(0.96 0.025 315));
+  --shadow-glow: 0 18px 50px -12px oklch(0.55 0.17 310 / 0.24);
+  --shadow-card: 0 20px 40px -24px oklch(0.28 0.08 310 / 0.28);
 }
 
 @layer base {
@@ -127,3 +127,11 @@
 @utility no-scrollbar { scrollbar-width: none; &::-webkit-scrollbar { display: none; } }
 @keyframes pop { 0% { transform: scale(1) } 40% { transform: scale(1.25) } 100% { transform: scale(1) } }
 @utility animate-pop { animation: pop .35s ease; }
+
+
+/* Modo Açaí — premium storefront motion and tactile details */
+html { scroll-behavior: smooth; }
+::selection { background: oklch(0.88 0.17 92 / .75); color: oklch(0.25 0.075 315); }
+@keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@utility animate-rise-in { animation: rise-in .65s cubic-bezier(.2,.75,.25,1) both; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
