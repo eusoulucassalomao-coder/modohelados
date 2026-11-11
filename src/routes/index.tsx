@@ -58,7 +58,7 @@ function Index() {
     inc(it.id); setBump((b) => b + 1);
     if (suggest) { const s = suggestionsFor(it.cat, Object.keys(cart).concat(it.id), catalog); setUpsell(s.length ? s : null); }
   };
-  const deals = catalog.filter((m) => m.old);
+  const deals = catalog.filter((m) => m.featured);
 
   return (
     <div className="min-h-screen pb-32">
@@ -99,7 +99,7 @@ function Index() {
           {deals.map((it) => (
             <button key={it.id} onClick={() => setSelectedItem(it)} className="relative w-64 shrink-0 snap-start overflow-hidden rounded-3xl bg-card-grad text-left shadow-card transition active:scale-95">
               {it.img && <img src={it.img} alt={it.name[lang]} loading="lazy" className="h-40 w-full object-cover" />}
-              <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-extrabold text-accent-foreground">-{Math.round((1 - it.price / it.old!) * 100)}%</span>
+              <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-extrabold text-accent-foreground">{it.old && it.old > it.price ? `-${Math.round((1 - it.price / it.old) * 100)}%` : (lang === "es" ? "OFERTA" : "DEAL")}</span>
               <div className="p-4">
                 <div className="font-display font-bold">{it.name[lang]}</div>
                 <div className="mt-1 flex items-center justify-between">
