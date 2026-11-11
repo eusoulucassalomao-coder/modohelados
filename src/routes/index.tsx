@@ -64,18 +64,18 @@ function Index() {
     <div className="min-h-screen pb-32">
       {/* top bar */}
       <header className="sticky top-0 z-30 border-b border-[#eadcf0] bg-[#fffaf2]/90 text-[#351044] shadow-[0_8px_30px_-24px_rgba(53,16,68,.45)] backdrop-blur-2xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-center gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2">
             <img src={LOGO} alt="Modo Açaí" className="h-9 w-9 rounded-full object-cover ring-2 ring-primary" />
             <span className="font-display text-lg font-extrabold">Modo Açaí</span>
           </div>
-          <div className="flex rounded-full border border-[#eadcf0] bg-white p-1 text-xs font-bold shadow-sm">
+          <div className="absolute right-4 top-1/2 flex -translate-y-1/2 rounded-full border border-[#eadcf0] bg-white p-1 text-xs font-bold shadow-sm sm:right-6">
             {(["es", "en"] as Lang[]).map((l) => (
               <button key={l} onClick={() => setLang(l)} className={`rounded-full px-3 py-1 uppercase transition ${lang === l ? "bg-[#54166e] text-white" : "text-[#8d7596]"}`}>{l}</button>
             ))}
           </div>
         </div>
-        <nav className="no-scrollbar mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
+        <nav className="no-scrollbar mx-auto flex max-w-6xl justify-center gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
           {["deals", ...catOrder].map((c) => (
             <a key={c} href={`#${c}`} className="whitespace-nowrap rounded-full border border-[#eadcf0] bg-white px-4 py-2 text-xs font-bold text-[#5c376b] shadow-sm transition hover:-translate-y-0.5 hover:border-[#8b36a5] hover:bg-[#f8effb]">
               {c === "deals" ? `🔥 ${L.deal}` : L.cats[c as Item["cat"]]}
@@ -94,7 +94,7 @@ function Index() {
 
       {/* deals */}
       <section id="deals" className="mx-auto mt-9 max-w-6xl scroll-mt-32 rounded-[2rem] bg-[#431052] px-4 py-7 text-white shadow-[0_24px_65px_-38px_rgba(53,16,68,.8)] sm:px-7 sm:py-9">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-2"><div><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.25em] text-[#f8d94d]">elegidos para hoy</p><h2 className="flex items-center gap-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl"><Flame className="h-7 w-7 text-[#ffcf3d]" /> {L.deal}</h2></div><span className="rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white/75">por tiempo limitado</span></div>
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-2"><div><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.25em] text-[#f8d94d]">elegidos para hoy</p><h2 className="flex items-center gap-2 font-display text-3xl font-extrabold tracking-tight text-[#ef3340] sm:text-4xl"><Flame className="h-7 w-7 text-[#ef3340]" /> {L.deal}</h2></div><span className="rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white/75">por tiempo limitado</span></div>
         <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
           {deals.map((it) => (
             <button key={it.id} onClick={() => setSelectedItem(it)} className="group relative w-[min(82vw,19rem)] shrink-0 snap-start overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#fff8e9] text-left text-[#351044] shadow-[0_18px_38px_-24px_rgba(0,0,0,.65)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_42px_-22px_rgba(0,0,0,.6)] active:scale-[.98]">
@@ -159,7 +159,7 @@ function ItemRow({ it, lang, qty, onOpen, onAdd, onDec }: { it: Item; lang: Lang
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-start gap-2">
           <h3 className="font-display text-base font-extrabold leading-tight text-[#421052]">{it.name[lang]}</h3>
-          {it.popular && <span className="shrink-0 rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold uppercase text-accent">{L.popular}</span>}
+          {it.popular && <span className="shrink-0 rounded-full bg-[#ef3340]/10 px-2 py-0.5 text-[10px] font-extrabold uppercase text-[#e52e3b]">{L.popular}</span>}
         </div>
         <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#907b98]">{it.desc[lang]}</p>
         <div className="mt-auto flex items-center justify-between pt-2">
