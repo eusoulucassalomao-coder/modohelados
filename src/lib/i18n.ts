@@ -1,0 +1,9 @@
+export type Lang = "es" | "en";
+export const WA_NUMBER = "5493765382010";
+export const t = {
+  es: { tagline: "Açaí & helados artesanales", sub: "Elegí, sumá y pedí por WhatsApp en segundos.", rating: "170 opiniones", order: "Pedir ahora", popular: "Más vendido", add: "Agregar", cart: "Tu pedido", empty: "Tu pedido está vacío", total: "Total", checkout: "Enviar pedido por WhatsApp", name: "Tu nombre", address: "Dirección de entrega (o 'retiro')", pay: "Pago", cash: "Efectivo", transfer: "Transferencia", upsellTitle: "¡Sumalo y completá tu antojo! 🍧", upsellCart: "Los clientes también llevan", viewCart: "Ver pedido", items: "productos", added: "agregado", save: "Ahorrás", deal: "Ofertas del día", chat: "¿Dudas? Escribinos", note: "Aclaraciones (sabores, toppings...)", hi: "¡Hola Modo Açaí! Quiero hacer este pedido:",
+    cats: { acai: "Açaí", helados: "Helados & Açaí por kilo", paletas: "Paletas rellenas", bebidas: "Bebidas", accesorios: "Accesorios" } },
+  en: { tagline: "Açaí & handmade ice cream", sub: "Pick, add and order on WhatsApp in seconds.", rating: "170 reviews", order: "Order now", popular: "Best seller", add: "Add", cart: "Your order", empty: "Your order is empty", total: "Total", checkout: "Send order on WhatsApp", name: "Your name", address: "Delivery address (or 'pickup')", pay: "Payment", cash: "Cash", transfer: "Bank transfer", upsellTitle: "Add this and complete your craving! 🍧", upsellCart: "Customers also take", viewCart: "View order", items: "items", added: "added", save: "You save", deal: "Today's deals", chat: "Questions? Message us", note: "Notes (flavors, toppings...)", hi: "Hi Modo Açaí! I'd like to order:",
+    cats: { acai: "Açaí bowls", helados: "Ice cream & açaí by kilo", paletas: "Filled popsicles", bebidas: "Drinks", accesorios: "Extras" } },
+} as const;
+export const money = (n: number) => "$" + n.toLocaleString("es-AR");

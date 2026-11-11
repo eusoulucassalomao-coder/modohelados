@@ -1,0 +1,658 @@
+[
+ {
+  "id": "p0",
+  "cat": "helados",
+  "name": {
+   "es": "Helado 1/4",
+   "en": "Ice cream 1/4 kg"
+  },
+  "desc": {
+   "es": "Delicioso helado artesanal, con una variedad de sabores para disfrutar.",
+   "en": "Handmade ice cream with a variety of flavors to enjoy."
+  },
+  "price": 6750,
+  "old": 7500,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/37d1273b-0c30-47f2-856b-e09b28b4d4b8.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p1",
+  "cat": "helados",
+  "name": {
+   "es": "Açaí 1kg",
+   "en": "Açaí 1 kg"
+  },
+  "desc": {
+   "es": "1 kilo de açaí. los toppings se venden por separado y se pueden agregar al pedido. incluyen frutas, ingredientes secos y salsas",
+   "en": "1 kilo of açaí. Toppings sold separately: fruits, dry toppings and sauces."
+  },
+  "price": 28000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/71c44472-279b-48b7-afff-e17cb415903f.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p2",
+  "cat": "helados",
+  "name": {
+   "es": "Helado 1/2 kg",
+   "en": "Ice cream 1/2 kg"
+  },
+  "desc": {
+   "es": "Elegí la combinación de sabores que mas te gusten para disfrutar de un momento agradable.",
+   "en": "Pick the flavor combo you love most for a sweet moment."
+  },
+  "price": 10150,
+  "old": 14500,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/9ee50637-5555-49cb-9b2b-5b633923824f.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p3",
+  "cat": "helados",
+  "name": {
+   "es": "Açaí 1/2 kg",
+   "en": "Açaí 1/2 kg"
+  },
+  "desc": {
+   "es": "1/2 kilo de açaí. los toppings se venden por separado y se pueden agregar al pedido. incluyen frutas, ingredientes secos y salsas",
+   "en": "1/2 kilo of açaí. Toppings sold separately: fruits, dry toppings and sauces."
+  },
+  "price": 15500,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/482bc5c5-0036-4cf9-ae1a-5c867618284a.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p4",
+  "cat": "helados",
+  "name": {
+   "es": "Açaí 1/4 kg",
+   "en": "Açaí 1/4 kg"
+  },
+  "desc": {
+   "es": "1/4 kilo de açaí. los toppings se venden por separado y se pueden agregar al pedido. incluyen frutas, ingredientes secos y salsas",
+   "en": "1/4 kilo of açaí. Toppings sold separately: fruits, dry toppings and sauces."
+  },
+  "price": 9000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/7bcc3adc-0b49-452f-9dc1-99eefcd1e02f.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p5",
+  "cat": "helados",
+  "name": {
+   "es": "Helado 1kg",
+   "en": "Ice cream 1 kg"
+  },
+  "desc": {
+   "es": "Elegí la combinación de sabores que mas te gusten para disfrutar de un momento agradable",
+   "en": "Pick the flavor combo you love most for a sweet moment."
+  },
+  "price": 23000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/e8b97f2c-377d-4268-af53-15d7c6a4e383.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p6",
+  "cat": "paletas",
+  "name": {
+   "es": "Paleta açaí con paçoca",
+   "en": "Açaí pop with paçoca"
+  },
+  "desc": {
+   "es": "Paleta de açaí relleno con paçoca",
+   "en": "Açaí popsicle filled with paçoca."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/aed18dfd-cebd-4a49-95e2-c58eb473105d.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p7",
+  "cat": "paletas",
+  "name": {
+   "es": "Paleta açaí con leche condensada",
+   "en": "Açaí pop with condensed milk"
+  },
+  "desc": {
+   "es": "Paleta de açaí por fuera rellenas de leche condensada",
+   "en": "Açaí popsicle filled with condensed milk."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/7024de9e-ac93-4994-b91f-d5349c6b1380.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p8",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí tentación grande",
+   "en": "Açaí temptation large"
+  },
+  "desc": {
+   "es": "Açaí acompañado de salsa de chocolate con avellanas, frutillas, obleas, kit kat, pelotitas chocolate y rocklets",
+   "en": "Açaí with hazelnut chocolate sauce, strawberries, wafers, kit kat, chocolate balls and rocklets"
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/8560107b-f6b0-4fc4-90d7-32e7b6512b0b.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p9",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí obletón grande",
+   "en": "Açaí wafer large"
+  },
+  "desc": {
+   "es": "Açaí acompañado de paçoca (mantecol), frutilla, coockie selecta, dulce de leche y obleas.",
+   "en": "Açaí with paçoca, strawberry, Selecta cookie, dulce de leche and wafers."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/ecbf9ba1-c396-44ce-bcab-37fd6c05fc01.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p10",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí natural grande",
+   "en": "Açaí natural large"
+  },
+  "desc": {
+   "es": "Açaí acompañado de coco rallado, leche condensada, granola, mani y banana.",
+   "en": "Açaí with shredded coconut, condensed milk, granola, peanuts and banana."
+  },
+  "price": 9900,
+  "old": 11000,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/b1fd0846-1ee9-47ba-86af-7466e2f5776e.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p11",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí tropical grande",
+   "en": "Açaí tropical large"
+  },
+  "desc": {
+   "es": "Incluye leche condensada, semillas de chia, leche nido, kiwi, banana y frutilla.",
+   "en": "Includes condensed milk, chia seeds, Nido milk, kiwi, banana and strawberry."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/f97b3485-dc7b-4455-a073-f405b17419d9.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p12",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí frutos rojos grande",
+   "en": "Açaí berries large"
+  },
+  "desc": {
+   "es": "Açaí acompañado de salsa de chocolate con avellanas, coockie selecta, frutos rojos y leche nido.",
+   "en": "Açaí with hazelnut chocolate sauce, Selecta cookie, berries and Nido milk."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/7609b603-64bc-4041-a02d-1851bed41a90.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p13",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí frutos rojos chico",
+   "en": "Açaí berries small"
+  },
+  "desc": {
+   "es": "Açai, leche nido, cookie selecta, salsa de chocolate con avellanas y frutos rojos",
+   "en": "Açaí, Nido milk, Selecta cookie, hazelnut chocolate sauce and berries"
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/acc50aa2-fbb4-4963-9063-9b60b0c5f6a6.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p14",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí tropical chico",
+   "en": "Açaí tropical small"
+  },
+  "desc": {
+   "es": "Açai, leche nido, leche condensada, kiwi, banana, frutilla",
+   "en": "Açaí, Nido milk, condensed milk, kiwi, banana, strawberry"
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/ac7cd503-4fea-46ac-8ea7-eb43cd5fbd75.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p15",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí natural chico",
+   "en": "Açaí natural small"
+  },
+  "desc": {
+   "es": "Açai, coco rayado, leche condensada, mani, granola y banana",
+   "en": "Açaí, shredded coconut, condensed milk, peanuts, granola and banana"
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/13ec3c53-823a-4041-aa3b-1a3b2aaec3a2.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p16",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí obletón chico",
+   "en": "Açaí wafer small"
+  },
+  "desc": {
+   "es": "Açai, paçoca (mantecol), cookie selecta, dulce de leche, frutilla, obleas",
+   "en": "Açaí, paçoca, Selecta cookie, dulce de leche, strawberry, wafers"
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/9a5565b4-1f9d-4605-96b7-272636cabd20.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p17",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí tentación chico",
+   "en": "Açaí temptation small"
+  },
+  "desc": {
+   "es": "Açai, salsa de chocolate con avellanas, frutillas, obleas, kit kat, y rocklets",
+   "en": "Açaí, hazelnut chocolate sauce, strawberries, wafers, kit kat, and rocklets"
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/b7037e0d-b2c4-4bec-880e-47b2721eaae7.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p18",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí argento chico",
+   "en": "Açaí argento small"
+  },
+  "desc": {
+   "es": "Açaí acompañado de banana, chocolinas, maní y dulce de leche.",
+   "en": "Açaí with banana, chocolate cookies, peanuts and dulce de leche."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/93c3cc7c-6e0c-46e0-b63f-dd4724e16117.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p19",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí choco oreo chico",
+   "en": "Açaí choco oreo small"
+  },
+  "desc": {
+   "es": "Açaí acompañado con kit kat, oreos, pelotitas de chocolate y salsa de chocolate con avellanas.",
+   "en": "Açaí with kit kat, Oreos, chocolate balls and hazelnut chocolate sauce."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/60657a80-3391-41e1-a15e-b19abebdd992.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p20",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí premium chico",
+   "en": "Açaí premium small"
+  },
+  "desc": {
+   "es": "Açaí acompañado con nueces, almendras, leche en polvo y salsa de chocolate con avellanas.",
+   "en": "Açaí with walnuts, almonds, powdered milk and hazelnut chocolate sauce."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/9256b469-1e12-4dd1-a5d4-b2240193019e.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p21",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí clásico chico",
+   "en": "Açaí classic small"
+  },
+  "desc": {
+   "es": "Açaí acompañado con leche en polvo y leche condensada.",
+   "en": "Açaí with powdered milk and condensed milk."
+  },
+  "price": 6000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/00ab0ec8-02f4-4adb-a64c-104fa869e468.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p22",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí argento grande",
+   "en": "Açaí argento large"
+  },
+  "desc": {
+   "es": "Açaí acompañado de banana, chocolinas, maní y dulce de leche.",
+   "en": "Açaí with banana, chocolate cookies, peanuts and dulce de leche."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/0bdbcb08-212e-4099-a6c1-fc8e239c92a0.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p23",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí choco oreo grande",
+   "en": "Açaí choco oreo large"
+  },
+  "desc": {
+   "es": "Açaí acompañado con kit kat, oreos, pelotitas de chocolate y salsa de chocolate con avellanas.",
+   "en": "Açaí with kit kat, Oreos, chocolate balls and hazelnut chocolate sauce."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/1758141b-f567-4177-a79f-4694094f727f.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p24",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí premium grande",
+   "en": "Açaí premium large"
+  },
+  "desc": {
+   "es": "Açaí acompañado con nueces, almendras, leche en polvo y salsa de chocolate con avellanas.",
+   "en": "Açaí with walnuts, almonds, powdered milk and hazelnut chocolate sauce."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/a9cca6f6-f841-4ae2-85e5-8a33b2afd4cc.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p25",
+  "cat": "acai",
+  "name": {
+   "es": "Açaí clásico grande",
+   "en": "Açaí classic large"
+  },
+  "desc": {
+   "es": "Açaí acompañado con leche en polvo y leche condensada.",
+   "en": "Açaí with powdered milk and condensed milk."
+  },
+  "price": 11000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/c0e3fb70-961c-4c99-b8be-e997447e0cc3.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p26",
+  "cat": "acai",
+  "name": {
+   "es": "Combo argento+clásico",
+   "en": "Argento + Classic combo"
+  },
+  "desc": {
+   "es": "2 vasos de açaí chicos. 1 argento: dulce de leche, maní, chocolinas y banana. 1 clásico: leche condensada y leche en polvo",
+   "en": "2 small açaí cups. Argento: dulce de leche, peanuts, chocolate cookies, banana. Classic: condensed milk and powdered milk."
+  },
+  "price": 10800,
+  "old": 12000,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/b1fd0846-1ee9-47ba-86af-7466e2f5776e.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p27",
+  "cat": "accesorios",
+  "name": {
+   "es": "Vasito",
+   "en": "Small cup"
+  },
+  "desc": {
+   "es": "Práctico vasito, perfecto para disfrutar tu helado o postre.",
+   "en": "Handy cup, perfect for your ice cream."
+  },
+  "price": 400,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/7e7301c3-4831-432a-a59c-3316edeaa5a1.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p28",
+  "cat": "accesorios",
+  "name": {
+   "es": "Cucurucho",
+   "en": "Cone"
+  },
+  "desc": {
+   "es": "Cucurucho crujiente, ideal para acompañar tu helado favorito.",
+   "en": "Crunchy cone for your favorite ice cream."
+  },
+  "price": 500,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/6b6dbe4c-5239-43e7-a765-9acaa5d697a5.jpeg?quality=85&width=600",
+  "popular": true
+ },
+ {
+  "id": "p29",
+  "cat": "bebidas",
+  "name": {
+   "es": "Batido",
+   "en": "Milkshake"
+  },
+  "desc": {
+   "es": "Refrescante batido preparado con 3 bochas de helado y leche fresca.",
+   "en": "Refreshing shake with 3 scoops of ice cream and fresh milk."
+  },
+  "price": 7000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/d22198b8-0ad8-497d-85fb-3a1d7d030f87.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p30",
+  "cat": "bebidas",
+  "name": {
+   "es": "Seven-up de limón lata 355 ml",
+   "en": "Seven-up lemon can 355 ml"
+  },
+  "desc": {
+   "es": "Lata de 7up 355ml",
+   "en": "Can of 7up 355ml"
+  },
+  "price": 2500,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/6749ba984c1f8c15d50daf73.jpg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p31",
+  "cat": "bebidas",
+  "name": {
+   "es": "Gaseosa Pepsi 500 ml",
+   "en": "Pepsi 500 ml"
+  },
+  "desc": {
+   "es": "500 ml",
+   "en": "500 ml"
+  },
+  "price": 2000,
+  "old": null,
+  "img": "https://pedidosya.dhmedia.io/image/pedidosya/products/da61ef85-4a19-47ce-a970-a85eaf68932a.jpeg?quality=85&width=600",
+  "popular": false
+ },
+ {
+  "id": "p32",
+  "cat": "bebidas",
+  "name": {
+   "es": "Bebida Red Bull 355 ml",
+   "en": "Red Bull 355 ml"
+  },
+  "desc": {
+   "es": "Red bull clasico",
+   "en": "Classic Red Bull"
+  },
+  "price": 4700,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p33",
+  "cat": "bebidas",
+  "name": {
+   "es": "Pepsi Lata 355 ml",
+   "en": "Pepsi can 355 ml"
+  },
+  "desc": {
+   "es": "Lata de pepsi de 355ml",
+   "en": "Can of pepsi de 355ml"
+  },
+  "price": 2500,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p34",
+  "cat": "bebidas",
+  "name": {
+   "es": "Red bull green edition",
+   "en": "Red bull green edition"
+  },
+  "desc": {
+   "es": "Sabor fruta del dragon",
+   "en": "Dragon fruit flavor"
+  },
+  "price": 3500,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p35",
+  "cat": "bebidas",
+  "name": {
+   "es": "Red bull red edition",
+   "en": "Red bull red edition"
+  },
+  "desc": {
+   "es": "Sabor sandia",
+   "en": "Watermelon flavor"
+  },
+  "price": 3500,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p36",
+  "cat": "bebidas",
+  "name": {
+   "es": "Gaseosa 7Up Lima Limón 500 ml",
+   "en": "7Up lemon-lime 500 ml"
+  },
+  "desc": {
+   "es": "Sabor lima limon",
+   "en": "Lemon-lime flavor"
+  },
+  "price": 2000,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p37",
+  "cat": "bebidas",
+  "name": {
+   "es": "Gaseosa Paso De Los Toros Pomelo 500 ml",
+   "en": "Paso De Los Toros grapefruit 500 ml"
+  },
+  "desc": {
+   "es": "Sabor pomelo",
+   "en": "Grapefruit flavor"
+  },
+  "price": 2000,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p38",
+  "cat": "bebidas",
+  "name": {
+   "es": "Agua Mineral Eco De Los Andes Sin Gas 500 ml",
+   "en": "Mineral water Eco De Los Andes still 500 ml"
+  },
+  "desc": {
+   "es": "Agua sin gas",
+   "en": "Still water"
+  },
+  "price": 1500,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p39",
+  "cat": "bebidas",
+  "name": {
+   "es": "Agua Mineral Eco De Los Andes Con Gas 500 ml",
+   "en": "Mineral water Eco De Los Andes sparkling 500 ml"
+  },
+  "desc": {
+   "es": "Agua eco con gas",
+   "en": "Sparkling water"
+  },
+  "price": 1500,
+  "old": null,
+  "img": null,
+  "popular": false
+ },
+ {
+  "id": "p40",
+  "cat": "bebidas",
+  "name": {
+   "es": "Paso de los toros pomelo 269 ml",
+   "en": "Paso de los toros grapefruit 269 ml"
+  },
+  "desc": {
+   "es": "Lata sabor pomelo 269ml",
+   "en": "Grapefruit can 269ml"
+  },
+  "price": 2000,
+  "old": null,
+  "img": null,
+  "popular": false
+ }
+]
