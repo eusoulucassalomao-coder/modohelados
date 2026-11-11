@@ -103,7 +103,7 @@ function Index() {
               <div className="p-4">
                 <div className="font-display font-bold">{it.name[lang]}</div>
                 <div className="mt-1 flex items-center justify-between">
-                  <div><span className="text-lg font-extrabold text-primary">{money(it.price)}</span> <s className="text-xs text-muted-foreground">{money(it.old!)}</s></div>
+                  <div><span className="text-lg font-extrabold text-primary">{money(it.price)}</span> {it.old != null && it.old > it.price && <s className="text-xs text-muted-foreground">{money(it.old)}</s>}</div>
                   <span onClick={(e) => { e.stopPropagation(); add(it); }} role="button" aria-label={L.add} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-5 w-5" /></span>
                 </div>
               </div>
