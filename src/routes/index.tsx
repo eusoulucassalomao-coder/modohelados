@@ -72,15 +72,10 @@ function Index() {
 
       {/* hero */}
       <section className="mx-auto max-w-5xl px-4 pt-6">
-        <div className="relative overflow-hidden rounded-3xl shadow-card">
-          <img src={heroAsset.url} alt="Açaí" className="h-64 w-full object-cover sm:h-80" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-          <div className="absolute bottom-0 p-6">
-            <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-background/70 px-3 py-1 text-xs font-bold backdrop-blur"><Star className="h-3.5 w-3.5 fill-primary text-primary" /> 4.8 · {L.rating}</div>
-            <h1 className="text-4xl font-extrabold leading-none sm:text-6xl">{L.tagline}</h1>
-            <p className="mt-2 text-muted-foreground">{L.sub}</p>
-          </div>
-        </div>
+        <h1 className="sr-only">{L.tagline}</h1>
+        <a href="#acai" className="block overflow-hidden rounded-3xl shadow-card">
+          <img src={heroAsset.url} alt={L.tagline} className="aspect-[16/9] w-full object-cover" />
+        </a>
       </section>
 
       {/* deals */}
