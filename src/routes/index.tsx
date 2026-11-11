@@ -2,11 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Minus, Plus, ShoppingBag, Star, X, MessageCircle, Flame, Sparkles } from "lucide-react";
 import { menu, catOrder, byId, suggestionsFor, type Item } from "@/lib/menu";
-import heroAsset from "@/assets/acai-hero.png.asset.json";
 import { t, money, WA_NUMBER, type Lang } from "@/lib/i18n";
 import { isSupabaseConfigured, selectRows, callRpc } from "@/lib/supabase";
 
-const HERO = "https://pedidosya.dhmedia.io/image/pedidosya/profile-headers/418b1ef7-2e08-452d-8088-2beeb91ee43b.jpeg?quality=70&width=1920";
 const LOGO = "https://pedidosya.dhmedia.io/image/pedidosya/restaurants/7518bb4e-f76a-44be-b9ca-e6026ce62950.jpg?quality=70&width=200";
 
 export const Route = createFileRoute("/")({
@@ -29,6 +27,7 @@ function Index() {
   const [catalog, setCatalog] = useState<Item[]>(menu);
   const [open, setOpen] = useState(false);
   const [upsell, setUpsell] = useState<Item[] | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [bump, setBump] = useState(0);
   const L = t[lang];
 
@@ -89,7 +88,7 @@ function Index() {
       <section className="mx-auto max-w-5xl px-4 pt-6">
         <h1 className="sr-only">{L.tagline}</h1>
         <a href="#acai" className="block overflow-hidden rounded-3xl shadow-card">
-          <img src={heroAsset.url} alt={L.tagline} className="aspect-[16/9] w-full object-cover" />
+          <img src="/images/acai-hero.webp" alt={L.tagline} className="aspect-[16/9] w-full object-cover" />
         </a>
       </section>
 
@@ -98,14 +97,14 @@ function Index() {
         <h2 className="mb-4 flex items-center gap-2 text-2xl font-extrabold"><Flame className="text-accent" /> {L.deal}</h2>
         <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4">
           {deals.map((it) => (
-            <button key={it.id} onClick={() => add(it)} className="relative w-64 shrink-0 snap-start overflow-hidden rounded-3xl bg-card-grad text-left shadow-card transition active:scale-95">
+            <button key={it.id} onClick={() => setSelectedItem(it)} className="relative w-64 shrink-0 snap-start overflow-hidden rounded-3xl bg-card-grad text-left shadow-card transition active:scale-95">
               {it.img && <img src={it.img} alt={it.name[lang]} loading="lazy" className="h-40 w-full object-cover" />}
               <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-extrabold text-accent-foreground">-{Math.round((1 - it.price / it.old!) * 100)}%</span>
               <div className="p-4">
                 <div className="font-display font-bold">{it.name[lang]}</div>
                 <div className="mt-1 flex items-center justify-between">
                   <div><span className="text-lg font-extrabold text-primary">{money(it.price)}</span> <s className="text-xs text-muted-foreground">{money(it.old!)}</s></div>
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-5 w-5" /></span>
+                  <span onClick={(e) => { e.stopPropagation(); add(it); }} role="button" aria-label={L.add} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-5 w-5" /></span>
                 </div>
               </div>
             </button>
@@ -118,7 +117,7 @@ function Index() {
           <h2 className="mb-4 text-2xl font-extrabold">{L.cats[c]}</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {catalog.filter((m) => m.cat === c).map((it) => (
-              <ItemRow key={it.id} it={it} lang={lang} qty={cart[it.id] ?? 0} onAdd={() => add(it)} onDec={() => inc(it.id, -1)} />
+              <ItemRow key={it.id} it={it} lang={lang} qty={cart[it.id] ?? 0} onOpen={() => setSelectedItem(it)} onAdd={() => add(it)} onDec={() => inc(it.id, -1)} />
             ))}
           </div>
         </section>
@@ -139,6 +138,7 @@ function Index() {
         </div>
       )}
 
+      {selectedItem && <ProductDetailSheet it={selectedItem} lang={lang} qty={cart[selectedItem.id] ?? 0} onAdd={() => add(selectedItem, false)} onDec={() => inc(selectedItem.id, -1)} onClose={() => setSelectedItem(null)} />}
       {upsell && <UpsellSheet items={upsell} lang={lang} onAdd={(it) => { add(it, false); setUpsell((u) => u!.filter((x) => x.id !== it.id)); }} onClose={() => setUpsell(null)} onCheckout={() => { setUpsell(null); setOpen(true); }} />}
       {open && <CartSheet cart={cart} items={catalog} lang={lang} total={total} inc={inc} add={(it) => add(it, false)} onClose={() => setOpen(false)} onOrderCreated={() => { setCart({}); setOpen(false); }} />}
     </div>
@@ -151,10 +151,10 @@ function Thumb({ it, lang, className }: { it: Item; lang: Lang; className: strin
     : <div className={`${className} grid place-items-center bg-secondary text-3xl`}>{it.cat === "bebidas" ? "🥤" : "🍧"}</div>;
 }
 
-function ItemRow({ it, lang, qty, onAdd, onDec }: { it: Item; lang: Lang; qty: number; onAdd: () => void; onDec: () => void }) {
+function ItemRow({ it, lang, qty, onOpen, onAdd, onDec }: { it: Item; lang: Lang; qty: number; onOpen: () => void; onAdd: () => void; onDec: () => void }) {
   const L = t[lang];
   return (
-    <div className="flex gap-3 rounded-3xl border border-border bg-card-grad p-3 shadow-card">
+    <div role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(); }} className="flex cursor-pointer gap-3 rounded-3xl border border-border bg-card-grad p-3 text-left shadow-card transition hover:border-primary/60">
       <Thumb it={it} lang={lang} className="h-24 w-24 shrink-0 rounded-2xl" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-start gap-2">
@@ -165,13 +165,28 @@ function ItemRow({ it, lang, qty, onAdd, onDec }: { it: Item; lang: Lang; qty: n
         <div className="mt-auto flex items-center justify-between pt-2">
           <div><span className="font-extrabold text-primary">{money(it.price)}</span>{it.old && <s className="ml-1 text-xs text-muted-foreground">{money(it.old)}</s>}</div>
           {qty === 0 ? (
-            <button onClick={onAdd} className="flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground transition active:scale-90"><Plus className="h-4 w-4" />{L.add}</button>
+            <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground transition active:scale-90"><Plus className="h-4 w-4" />{L.add}</button>
           ) : (
-            <Stepper qty={qty} onInc={onAdd} onDec={onDec} />
+            <span onClick={(e) => e.stopPropagation()}><Stepper qty={qty} onInc={onAdd} onDec={onDec} /></span>
           )}
         </div>
       </div>
     </div>
+  );
+}
+
+function ProductDetailSheet({ it, lang, qty, onAdd, onDec, onClose }: { it: Item; lang: Lang; qty: number; onAdd: () => void; onDec: () => void; onClose: () => void }) {
+  return (
+    <Sheet onClose={onClose}>
+      <div className="relative -mx-5 -mt-5 mb-4">
+        <Thumb it={it} lang={lang} className="h-64 w-full rounded-t-3xl sm:rounded-t-3xl" />
+        <button onClick={onClose} aria-label="Cerrar" className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-black/65 text-white"><X /></button>
+      </div>
+      <div className="flex items-start justify-between gap-3"><h3 className="text-2xl font-extrabold">{it.name[lang]}</h3>{it.popular && <span className="rounded-full bg-accent/20 px-2 py-1 text-xs font-bold text-accent">{t[lang].popular}</span>}</div>
+      <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">{it.desc?.[lang] || (lang === "es" ? "Consultá los detalles de este producto por WhatsApp." : "Ask us about this product on WhatsApp.")}</p>
+      <div className="mt-5 flex items-center justify-between"><div><div className="text-2xl font-extrabold text-primary">{money(it.price)}</div>{it.old && <s className="text-sm text-muted-foreground">{money(it.old)}</s>}</div>{qty > 0 && <Stepper qty={qty} onInc={onAdd} onDec={onDec} />}</div>
+      <button onClick={onAdd} className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-bold text-primary-foreground"><Plus className="h-5 w-5" />{qty > 0 ? (lang === "es" ? "Agregar otro" : "Add another") : t[lang].add}</button>
+    </Sheet>
   );
 }
 
