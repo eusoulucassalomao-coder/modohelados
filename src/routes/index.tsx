@@ -215,14 +215,14 @@ function CartSheet({ cart, lang, total, inc, add, onClose }: { cart: Cart; lang:
   const L = t[lang];
   const [name, setName] = useState(""); const [address, setAddress] = useState(""); const [note, setNote] = useState(""); const [pay, setPay] = useState<"cash" | "transfer">("cash");
   const ids = Object.keys(cart);
-  const saved = ids.reduce((a, id) => a + ((byId(id).old ?? byId(id).price) - byId(id).price) * cart[id], 0);
+  const saved = ids.reduce((a, id) => a + ((byId(id).old ?? byId(id).price) - byId(id).price) * (cart[id] ?? 0), 0);
   const recs = useMemo(() => {
     const cats = new Set(ids.map((i) => byId(i).cat));
     const r = [...cats].flatMap((c) => suggestionsFor(c, ids));
     return [...new Map(r.map((x) => [x.id, x])).values()].slice(0, 4);
   }, [cart]);
   const send = () => {
-    const lines = ids.map((id) => `• ${cart[id]}x ${byId(id).name.es} — ${money(byId(id).price * cart[id])}`);
+    const lines = ids.map((id) => `• ${(cart[id] ?? 0)}x ${byId(id).name.es} — ${money(byId(id).price * (cart[id] ?? 0))}`);
     const msg = [t.es.hi, "", ...lines, "", `*Total: ${money(total)}*`, `Nombre: ${name}`, `Entrega: ${address}`, `Pago: ${pay === "cash" ? "Efectivo" : "Transferencia"}`, note && `Nota: ${note}`].filter(Boolean).join("\n");
     window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
   };
@@ -235,8 +235,8 @@ function CartSheet({ cart, lang, total, inc, add, onClose }: { cart: Cart; lang:
             {ids.map((id) => { const it = byId(id); return (
               <div key={id} className="flex items-center gap-3">
                 <Thumb it={it} lang={lang} className="h-12 w-12 rounded-xl" />
-                <div className="flex-1 text-sm"><div className="font-bold">{it.name[lang]}</div><div className="text-muted-foreground">{money(it.price * cart[id])}</div></div>
-                <Stepper qty={cart[id]} onInc={() => inc(id)} onDec={() => inc(id, -1)} />
+                <div className="flex-1 text-sm"><div className="font-bold">{it.name[lang]}</div><div className="text-muted-foreground">{money(it.price * (cart[id] ?? 0))}</div></div>
+                <Stepper qty={(cart[id] ?? 0)} onInc={() => inc(id)} onDec={() => inc(id, -1)} />
               </div>); })}
           </div>
           {recs.length > 0 && (
