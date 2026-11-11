@@ -35,12 +35,17 @@ create table if not exists public.staff_profiles (
  active boolean not null default true, created_at timestamptz not null default now()
 );
 
-create or replace function public.is_staff() returns boolean language sql stable security definer set search_path = '' as $$
+create schema if not exists private;
+revoke all on schema private from public;
+grant usage on schema private to authenticated;
+create or replace function private.is_staff() returns boolean language sql stable security definer set search_path = '' as $$
  select exists(select 1 from public.staff_profiles where id=(select auth.uid()) and active=true);
 $$;
-create or replace function public.is_owner() returns boolean language sql stable security definer set search_path = '' as $$
+create or replace function private.is_owner() returns boolean language sql stable security definer set search_path = '' as $$
  select exists(select 1 from public.staff_profiles where id=(select auth.uid()) and active=true and role='owner');
 $$;
+grant execute on function private.is_staff() to authenticated;
+grant execute on function private.is_owner() to authenticated;
 create or replace function public.bootstrap_modo_staff() returns trigger language plpgsql security definer set search_path = '' as $$
 begin
  if lower(new.email)='modo@helados.com' then
@@ -75,32 +80,32 @@ drop policy if exists "Authenticated catalog visibility" on public.products;
 drop policy if exists "Public can view available products" on public.products;
 drop policy if exists "Staff can view all products" on public.products;
 create policy "Catalog visibility" on public.products for select to anon using(available=true);
-create policy "Authenticated catalog visibility" on public.products for select to authenticated using(available=true or public.is_staff());
+create policy "Authenticated catalog visibility" on public.products for select to authenticated using(available=true or private.is_staff());
 drop policy if exists "Staff can insert products" on public.products;
-create policy "Staff can insert products" on public.products for insert to authenticated with check(public.is_staff());
+create policy "Staff can insert products" on public.products for insert to authenticated with check(private.is_staff());
 drop policy if exists "Staff can update products" on public.products;
-create policy "Staff can update products" on public.products for update to authenticated using(public.is_staff()) with check(public.is_staff());
+create policy "Staff can update products" on public.products for update to authenticated using(private.is_staff()) with check(private.is_staff());
 drop policy if exists "Owners can delete products" on public.products;
-create policy "Owners can delete products" on public.products for delete to authenticated using(public.is_owner());
+create policy "Owners can delete products" on public.products for delete to authenticated using(private.is_owner());
 
 drop policy if exists "Staff can view customers" on public.customers;
-create policy "Staff can view customers" on public.customers for select to authenticated using(public.is_staff());
+create policy "Staff can view customers" on public.customers for select to authenticated using(private.is_staff());
 drop policy if exists "Staff can update customers" on public.customers;
-create policy "Staff can update customers" on public.customers for update to authenticated using(public.is_staff()) with check(public.is_staff());
+create policy "Staff can update customers" on public.customers for update to authenticated using(private.is_staff()) with check(private.is_staff());
 drop policy if exists "Staff can view orders" on public.orders;
-create policy "Staff can view orders" on public.orders for select to authenticated using(public.is_staff());
+create policy "Staff can view orders" on public.orders for select to authenticated using(private.is_staff());
 drop policy if exists "Staff can update orders" on public.orders;
-create policy "Staff can update orders" on public.orders for update to authenticated using(public.is_staff()) with check(public.is_staff());
+create policy "Staff can update orders" on public.orders for update to authenticated using(private.is_staff()) with check(private.is_staff());
 drop policy if exists "Staff can view order items" on public.order_items;
-create policy "Staff can view order items" on public.order_items for select to authenticated using(public.is_staff());
+create policy "Staff can view order items" on public.order_items for select to authenticated using(private.is_staff());
 drop policy if exists "Staff can view own staff profile" on public.staff_profiles;
-create policy "Staff can view own staff profile" on public.staff_profiles for select to authenticated using(id=(select auth.uid()) or public.is_owner());
+create policy "Staff can view own staff profile" on public.staff_profiles for select to authenticated using(id=(select auth.uid()) or private.is_owner());
 drop policy if exists "Owners can add staff" on public.staff_profiles;
-create policy "Owners can add staff" on public.staff_profiles for insert to authenticated with check(public.is_owner());
+create policy "Owners can add staff" on public.staff_profiles for insert to authenticated with check(private.is_owner());
 drop policy if exists "Owners can update staff" on public.staff_profiles;
-create policy "Owners can update staff" on public.staff_profiles for update to authenticated using(public.is_owner()) with check(public.is_owner());
+create policy "Owners can update staff" on public.staff_profiles for update to authenticated using(private.is_owner()) with check(private.is_owner());
 drop policy if exists "Owners can remove staff" on public.staff_profiles;
-create policy "Owners can remove staff" on public.staff_profiles for delete to authenticated using(public.is_owner());
+create policy "Owners can remove staff" on public.staff_profiles for delete to authenticated using(private.is_owner());
 
 create or replace function public.place_order(p_name text,p_phone text,p_address text,p_note text,p_payment text,p_items jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
@@ -135,10 +140,13 @@ $$;
 revoke all on function public.place_order(text,text,text,text,text,jsonb) from public;
 grant execute on function public.place_order(text,text,text,text,text,jsonb) to anon,authenticated;
 revoke all on function public.bootstrap_modo_staff() from public,anon,authenticated;
-revoke all on function public.is_staff() from public,anon;
-revoke all on function public.is_owner() from public,anon;
-grant execute on function public.is_staff() to authenticated;
-grant execute on function public.is_owner() to authenticated;
+revoke all on function public.is_staff() from public,anon,authenticated;
+revoke all on function public.is_owner() from public,anon,authenticated;
+grant execute on function private.is_staff() to authenticated;
+grant execute on function private.is_owner() to authenticated;
+
+drop function if exists public.is_staff();
+drop function if exists public.is_owner();
 
 grant select on public.products to anon,authenticated;
 grant insert,update,delete on public.products to authenticated;
@@ -205,8 +213,8 @@ on conflict(id) do update set public=true,file_size_limit=5242880,allowed_mime_t
 drop policy if exists "Public can view product images" on storage.objects;
 create policy "Public can view product images" on storage.objects for select to anon,authenticated using(bucket_id='product-images');
 drop policy if exists "Staff can upload product images" on storage.objects;
-create policy "Staff can upload product images" on storage.objects for insert to authenticated with check(bucket_id='product-images' and public.is_staff());
+create policy "Staff can upload product images" on storage.objects for insert to authenticated with check(bucket_id='product-images' and private.is_staff());
 drop policy if exists "Staff can update product images" on storage.objects;
-create policy "Staff can update product images" on storage.objects for update to authenticated using(bucket_id='product-images' and public.is_staff()) with check(bucket_id='product-images' and public.is_staff());
+create policy "Staff can update product images" on storage.objects for update to authenticated using(bucket_id='product-images' and private.is_staff()) with check(bucket_id='product-images' and private.is_staff());
 drop policy if exists "Owners can delete product images" on storage.objects;
-create policy "Owners can delete product images" on storage.objects for delete to authenticated using(bucket_id='product-images' and public.is_owner());
+create policy "Owners can delete product images" on storage.objects for delete to authenticated using(bucket_id='product-images' and private.is_owner());
