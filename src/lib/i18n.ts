@@ -6,4 +6,4 @@ export const t = {
   en: { tagline: "Açaí & handmade ice cream", sub: "Pick, add and order on WhatsApp in seconds.", rating: "170 reviews", order: "Order now", popular: "Best seller", add: "Add", cart: "Your order", empty: "Your order is empty", total: "Total", checkout: "Send order on WhatsApp", name: "Your name", address: "Delivery address (or 'pickup')", pay: "Payment", cash: "Cash", transfer: "Bank transfer", upsellTitle: "Add this and complete your craving! 🍧", upsellCart: "Customers also take", viewCart: "View order", items: "items", added: "added", save: "You save", deal: "Today's deals", chat: "Questions? Message us", note: "Notes (flavors, toppings...)", hi: "Hi Modo Açaí! I'd like to order:",
     cats: { acai: "Açaí bowls", helados: "Ice cream & açaí by kilo", paletas: "Filled popsicles", bebidas: "Drinks", accesorios: "Extras" } },
 } as const;
-export const money = (n: number) => "$" + n.toLocaleString("es-AR");
+export const money = (n: number | null | undefined) => n == null || !Number.isFinite(n) ? "—" : "$" + n.toLocaleString("es-AR");
