@@ -31,6 +31,18 @@ async function request<T>(path: string, init: RequestInit = {}, token?: string):
   });
   const body = await response.text();
   const data = body ? JSON.parse(body) : null;
+  if (!response.ok && response.status === 401 && !path.startsWith("/auth/v1/token")) {
+    const session = readSession();
+    if (session?.refresh_token) {
+      try {
+        const refreshed = await request<AuthSession>("/auth/v1/token?grant_type=refresh_token", {
+          method: "POST", body: JSON.stringify({ refresh_token: session.refresh_token }),
+        }, SUPABASE_KEY);
+        writeSession(refreshed);
+        return request<T>(path, init, refreshed.access_token);
+      } catch { writeSession(null); }
+    }
+  }
   if (!response.ok) throw new Error(data?.message || data?.msg || data?.error_description || data?.hint || "Error al comunicarse con Supabase.");
   return data as T;
 }
@@ -53,7 +65,7 @@ export function getSession() { return readSession(); }
 export async function getCurrentUser() {
   const session = readSession();
   if (!session) return null;
-  try { return await request<AuthUser>("/auth/v1/user", {}, session.access_token); }
+  try { return await request<AuthUser>("/auth/v1/user"); }
   catch { writeSession(null); return null; }
 }
 export async function selectRows<T>(table: string, query: Record<string, string> = {}) {
