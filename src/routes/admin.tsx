@@ -40,6 +40,7 @@ function AdminPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customerFilter, setCustomerFilter] = useState<"all" | "recent" | "inactive">("all");
   const [error, setError] = useState("");
 
   const load = useCallback(async () => {
@@ -86,6 +87,29 @@ function AdminPage() {
     const todayOrders = orders.filter((o) => new Date(o.created_at).toDateString() === today);
     return { active: activeOrders.length, revenue, today: todayOrders.length, customers: customers.length };
   }, [orders, customers]);
+
+  const customerSegments = useMemo(() => {
+    const now = Date.now();
+    return customers.reduce((counts, customer) => {
+      if (!customer.last_order_at) { counts.withoutDate += 1; return counts; }
+      const timestamp = new Date(customer.last_order_at).getTime();
+      if (!Number.isFinite(timestamp)) { counts.withoutDate += 1; return counts; }
+      const days = Math.max(0, Math.floor((now - timestamp) / 86_400_000));
+      if (days >= 10) counts.inactive += 1;
+      else counts.recent += 1;
+      return counts;
+    }, { recent: 0, inactive: 0, withoutDate: 0 });
+  }, [customers]);
+
+  const filteredCustomers = useMemo(() => customers.filter((customer) => {
+    if (!customer.last_order_at) return customerFilter === "all";
+    const timestamp = new Date(customer.last_order_at).getTime();
+    if (!Number.isFinite(timestamp)) return customerFilter === "all";
+    const days = Math.max(0, Math.floor((Date.now() - timestamp) / 86_400_000));
+    if (customerFilter === "inactive") return days >= 10;
+    if (customerFilter === "recent") return days < 10;
+    return true;
+  }), [customers, customerFilter]);
 
   const login = async (event: React.FormEvent) => {
     event.preventDefault(); setBusy(true); setLoginError("");
@@ -172,7 +196,22 @@ function AdminPage() {
       <label className="flex items-center gap-2 text-xs text-amber-300"><input type="checkbox" checked={product.featured} onChange={(e)=>void changeProduct(product,{featured:e.target.checked})}/> Oferta del día</label>
       <label className="flex items-center gap-2 text-xs text-white/60"><input type="checkbox" checked={product.available} onChange={(e)=>void changeProduct(product,{available:e.target.checked})}/> Disponible</label>
     </article>)}</div></section>}
-    {tab === "customers" && <section><h2 className="mb-3 text-xl font-bold">Clientes · {customers.length}</h2>{customers.length===0?<Empty>Los clientes aparecerán automáticamente cuando realicen su primer pedido.</Empty>:<div className="space-y-2">{customers.map((customer)=><article key={customer.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4"><div><p className="font-bold">{customer.name}</p><p className="text-sm text-white/55">{customer.phone}</p><p className="text-xs text-white/35">{customer.default_address||"Sin dirección guardada"}</p></div><a className="text-sm font-semibold text-lime-300" href={`https://wa.me/${customer.phone.replace(/\D/g,"")}`} target="_blank" rel="noreferrer">Contactar ↗</a></article>)}</div>}</section>}
+    {tab === "customers" && <section>
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-xl font-bold">Clientes · {customers.length}</h2><p className="mt-1 text-xs text-white/45">Clasificación según la última compra registrada</p></div><button onClick={() => void load()} className="rounded-lg border border-white/10 px-3 py-2 text-xs text-white/65 hover:bg-white/5">Actualizar clientes</button></div>
+      <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <button onClick={() => setCustomerFilter("all")} className={\`rounded-xl border p-3 text-left \${customerFilter === "all" ? "border-lime-300 bg-lime-300/10" : "border-white/10 bg-white/[0.03]"}\`}><span className="block text-xs text-white/55">Todos</span><strong className="mt-1 block text-xl">{customers.length}</strong></button>
+        <button onClick={() => setCustomerFilter("recent")} className={\`rounded-xl border p-3 text-left \${customerFilter === "recent" ? "border-emerald-300 bg-emerald-300/10" : "border-white/10 bg-white/[0.03]"}\`}><span className="block text-xs text-white/55">Recientes · menos de 10 días</span><strong className="mt-1 block text-xl">{customerSegments.recent}</strong></button>
+        <button onClick={() => setCustomerFilter("inactive")} className={\`rounded-xl border p-3 text-left \${customerFilter === "inactive" ? "border-amber-300 bg-amber-300/10" : "border-white/10 bg-white/[0.03]"}\`}><span className="block text-xs text-white/55">Sin comprar · 10+ días</span><strong className="mt-1 block text-xl">{customerSegments.inactive}</strong></button>
+      </div>
+      {customerSegments.withoutDate > 0 && <p className="mb-3 text-xs text-white/40">{customerSegments.withoutDate} cliente(s) sin fecha de última compra registrada; aparecen únicamente en “Todos”.</p>}
+      {customers.length===0 ? <Empty>Los clientes aparecerán automáticamente cuando realicen su primer pedido.</Empty> : filteredCustomers.length===0 ? <Empty>No hay clientes en esta categoría.</Empty> : <div className="space-y-2">{filteredCustomers.map((customer)=>{
+        const lastOrder = customer.last_order_at ? new Date(customer.last_order_at) : null;
+        const validDate = lastOrder && Number.isFinite(lastOrder.getTime());
+        const days = validDate ? Math.max(0, Math.floor((Date.now() - lastOrder.getTime()) / 86_400_000)) : null;
+        const inactive = days !== null && days >= 10;
+        return <article key={customer.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4"><div className="min-w-0"><p className="font-bold">{customer.name}</p><p className="text-sm text-white/55">{customer.phone}</p><p className="text-xs text-white/35">{customer.default_address||"Sin dirección guardada"}</p><p className="mt-1 text-xs text-white/50">{validDate ? \`Última compra: \${lastOrder.toLocaleDateString("es-AR")} · hace \${days} día(s)\` : "Sin fecha de última compra"}</p></div><div className="flex items-center gap-3"><span className={\`rounded-full px-2.5 py-1 text-[11px] font-bold \${inactive ? "bg-amber-500/15 text-amber-300" : days === null ? "bg-white/10 text-white/50" : "bg-emerald-500/15 text-emerald-300"}\`}>{inactive ? \`\${days} días sin comprar\` : days === null ? "Sin fecha" : "Reciente"}</span><a className="text-sm font-semibold text-lime-300" href={\`https://wa.me/\${customer.phone.replace(/\\D/g,"")}\`} target="_blank" rel="noreferrer">Contactar ↗</a></div></article>;
+      })}</div>}
+    </section>}
     <footer className="mt-10 border-t border-white/10 pt-4 text-xs text-white/35">Panel privado · Los datos se consultan directamente desde Supabase.</footer>
   </Shell>;
 }
