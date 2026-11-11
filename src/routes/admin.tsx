@@ -138,9 +138,9 @@ function AdminPage() {
       <div className="flex gap-2"><button onClick={() => void load()} className="rounded-xl border border-white/10 p-3 hover:bg-white/5" aria-label="Actualizar"><RefreshCw size={18}/></button><button onClick={() => void logout()} className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm hover:bg-white/5"><LogOut size={17}/> Salir</button></div>
     </header>
     <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-      <Stat label="Pedidos activos" value={String(stats.active)} icon={<ClipboardList/>}/>
+      <Stat label="Activos (últimos 150)" value={String(stats.active)} icon={<ClipboardList/>}/>
       <Stat label="Pedidos de hoy" value={String(stats.today)} icon={<BarChart3/>}/>
-      <Stat label="Facturación registrada" value={money(stats.revenue)} icon={<Package/>}/>
+      <Stat label="Ventas (últimos 150)" value={money(stats.revenue)} icon={<Package/>}/>
       <Stat label="Clientes" value={String(stats.customers)} icon={<Users/>}/>
     </div>
     <nav className="mb-5 flex gap-2 overflow-x-auto">
