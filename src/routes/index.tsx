@@ -4,7 +4,7 @@ import { Minus, Plus, ShoppingBag, Star, X, MessageCircle, Flame, Sparkles } fro
 import { menu, catOrder, byId, suggestionsFor, type Item } from "@/lib/menu";
 import heroAsset from "@/assets/acai-hero.png.asset.json";
 import { t, money, WA_NUMBER, type Lang } from "@/lib/i18n";
-import { supabase } from "@/lib/supabase";
+import { isSupabaseConfigured, selectRows, callRpc } from "@/lib/supabase";
 
 const HERO = "https://pedidosya.dhmedia.io/image/pedidosya/profile-headers/418b1ef7-2e08-452d-8088-2beeb91ee43b.jpeg?quality=70&width=1920";
 const LOGO = "https://pedidosya.dhmedia.io/image/pedidosya/restaurants/7518bb4e-f76a-44be-b9ca-e6026ce62950.jpg?quality=70&width=200";
@@ -37,16 +37,16 @@ function Index() {
     const l = localStorage.getItem("ma-lang") as Lang | null; if (l) setLang(l);
   }, []);
   useEffect(() => {
-    if (!supabase) return;
+    if (!isSupabaseConfigured) return;
     let active = true;
-    void supabase.from("products").select("*").eq("available", true).order("cat").then(({ data, error }) => {
-      if (!active || error || !data) return;
+    void selectRows<any>("products", { select: "*", available: "eq.true", order: "cat.asc" }).then((data) => {
+      if (!active || !data) return;
       setCatalog(data.map((row) => ({
         id: row.id, cat: row.cat, name: row.name, desc: row.description,
         price: row.price, old: row.old_price, img: row.image_url,
         popular: row.popular, featured: row.featured, available: row.available,
       })) as Item[]);
-    });
+    }).catch(() => undefined);
     return () => { active = false; };
   }, []);
   useEffect(() => { localStorage.setItem("ma-cart", JSON.stringify(cart)); }, [cart]);
@@ -232,17 +232,15 @@ function CartSheet({ cart, items, lang, total, inc, add, onClose, onOrderCreated
     return [...new Map(r.map((x) => [x.id, x])).values()].slice(0, 4);
   }, [cart]);
   const send = async () => {
-    if (!name.trim() || !phone.trim() || !address.trim() || !supabase || sending) return;
+    if (!name.trim() || !phone.trim() || !address.trim() || !isSupabaseConfigured || sending) return;
     const waWindow = window.open("about:blank", "_blank");
     setSending(true); setOrderError("");
     try {
-      const { data, error } = await supabase.rpc("place_order", {
+      const result = await callRpc<{ order_number: number; total: number }>("place_order", {
         p_name: name.trim(), p_phone: phone.trim(), p_address: address.trim(),
         p_note: note.trim(), p_payment: pay,
         p_items: ids.map((id) => ({ product_id: id, quantity: cart[id] ?? 0 })),
       });
-      if (error) throw error;
-      const result = data as { order_number: number; total: number };
       const lines = ids.map((id) => { const it = byId(id, items); return `• ${cart[id]}x ${it.name.es} — ${money(it.price * cart[id])}`; });
       const msg = [t.es.hi, `Pedido #${result.order_number}`, "", ...lines, "", `*Total: ${money(result.total)}*`, `Nombre: ${name}`, `Teléfono: ${phone}`, `Entrega: ${address}`, `Pago: ${pay === "cash" ? "Efectivo" : "Transferencia"}`, note && `Nota: ${note}`].filter(Boolean).join("\n");
       const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
@@ -296,8 +294,8 @@ function CartSheet({ cart, items, lang, total, inc, add, onClose, onOrderCreated
             <span className="font-display text-3xl font-extrabold">{money(total)}</span>
           </div>
           {orderError && <p role="alert" className="rounded-xl bg-destructive/15 p-3 text-sm text-destructive">{orderError}</p>}
-          {!supabase && <p className="text-xs text-destructive">Falta configurar las variables de Supabase para recibir pedidos.</p>}
-          <button disabled={!name.trim() || !phone.trim() || !address.trim() || sending || !supabase} onClick={send} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-whatsapp py-4 font-bold text-primary-foreground shadow-glow disabled:opacity-40">
+          {!isSupabaseConfigured && <p className="text-xs text-destructive">Falta configurar las variables de Supabase para recibir pedidos.</p>}
+          <button disabled={!name.trim() || !phone.trim() || !address.trim() || sending || !isSupabaseConfigured} onClick={send} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-whatsapp py-4 font-bold text-primary-foreground shadow-glow disabled:opacity-40">
             <MessageCircle className="h-5 w-5" />{sending ? "Registrando pedido..." : L.checkout}
           </button>
         </>
