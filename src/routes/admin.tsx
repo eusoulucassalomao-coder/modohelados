@@ -14,7 +14,7 @@ type Order = {
   customer?: { name: string; phone: string } | null;
   order_items?: { product_name: { es: string; en: string }; quantity: number; line_total: number }[];
 };
-type Product = { id: string; name: { es: string; en: string }; cat: string; price: number; available: boolean; image_url: string | null; popular: boolean };
+type Product = { id: string; name: { es: string; en: string }; description: { es: string; en: string }; cat: string; price: number; old_price: number | null; available: boolean; image_url: string | null; popular: boolean; featured: boolean };
 type Customer = { id: string; name: string; phone: string; default_address: string | null; last_order_at: string | null };
 
 const statusLabels: Record<Status, string> = {
@@ -36,6 +36,7 @@ function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState<Tab>("orders");
+  const [productGroup, setProductGroup] = useState<"deals" | "regular">("regular");
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -164,10 +165,11 @@ function AdminPage() {
         <div className="flex flex-wrap items-center gap-2"><label className="text-xs text-white/45">Estado</label><select value={order.status} onChange={(e)=>void changeStatus(order,e.target.value as Status)} className="rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm">{Object.entries(statusLabels).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select><a className="ml-auto text-sm font-semibold text-lime-300 hover:underline" href={`https://wa.me/${(order.customer?.phone||"").replace(/\D/g,"")}`} target="_blank" rel="noreferrer">WhatsApp cliente ↗</a></div>
       </article>)}
     </section>}
-    {tab === "products" && <section><h2 className="mb-3 text-xl font-bold">Catálogo · {products.length} productos</h2><div className="space-y-2">{products.map((product)=><article key={product.id} className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+    {tab === "products" && <section><h2 className="mb-3 text-xl font-bold">Catálogo · {products.length} productos</h2><div className="mb-4 flex gap-2"><button onClick={()=>setProductGroup("deals")} className={`rounded-xl px-4 py-2 text-sm font-bold ${productGroup==="deals"?"bg-lime-300 text-zinc-950":"border border-white/10 text-white/65"}`}>🔥 Ofertas del día ({products.filter(p=>p.featured).length})</button><button onClick={()=>setProductGroup("regular")} className={`rounded-xl px-4 py-2 text-sm font-bold ${productGroup==="regular"?"bg-lime-300 text-zinc-950":"border border-white/10 text-white/65"}`}>Productos normales ({products.filter(p=>!p.featured).length})</button></div><div className="space-y-2">{products.filter(p=>productGroup==="deals"?p.featured:!p.featured).map((product)=><article key={product.id} className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3">
       {product.image_url ? <img src={product.image_url} alt="" className="h-14 w-14 rounded-xl object-cover"/> : <div className="grid h-14 w-14 place-items-center rounded-xl bg-white/5"><Package/></div>}
-      <div className="min-w-0 flex-1"><p className="truncate font-bold">{product.name.es}</p><p className="text-xs text-white/45">{product.cat} · {product.id}</p></div>
+      <div className="min-w-0 flex-1"><p className="truncate font-bold">{product.name.es}</p><p className="text-xs text-white/45">{product.cat}</p></div>
       <label className="flex items-center gap-2 text-sm"><span className="text-white/50">$</span><input type="number" min="0" step="50" defaultValue={product.price} onBlur={(e)=>{const v=Number(e.target.value);if(Number.isFinite(v)&&v>=0&&v!==product.price)void changeProduct(product,{price:v});}} className="w-24 rounded-lg border border-white/10 bg-black/20 px-2 py-2"/></label>
+      <label className="flex items-center gap-2 text-xs text-amber-300"><input type="checkbox" checked={product.featured} onChange={(e)=>void changeProduct(product,{featured:e.target.checked})}/> Oferta del día</label>
       <label className="flex items-center gap-2 text-xs text-white/60"><input type="checkbox" checked={product.available} onChange={(e)=>void changeProduct(product,{available:e.target.checked})}/> Disponible</label>
     </article>)}</div></section>}
     {tab === "customers" && <section><h2 className="mb-3 text-xl font-bold">Clientes · {customers.length}</h2>{customers.length===0?<Empty>Los clientes aparecerán automáticamente cuando realicen su primer pedido.</Empty>:<div className="space-y-2">{customers.map((customer)=><article key={customer.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-4"><div><p className="font-bold">{customer.name}</p><p className="text-sm text-white/55">{customer.phone}</p><p className="text-xs text-white/35">{customer.default_address||"Sin dirección guardada"}</p></div><a className="text-sm font-semibold text-lime-300" href={`https://wa.me/${customer.phone.replace(/\D/g,"")}`} target="_blank" rel="noreferrer">Contactar ↗</a></article>)}</div>}</section>}
