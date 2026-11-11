@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BarChart3, Boxes, ClipboardList, LogOut, Package, RefreshCw, Users } from "lucide-react";
-import { callRpc, getCurrentUser, getSession, insertRow, isSupabaseConfigured, selectRows, signIn, signOut, updateRow, type AuthUser } from "@/lib/supabase";
+import { getCurrentUser, getSession, isSupabaseConfigured, selectRows, signIn, signOut, updateRow, type AuthUser } from "@/lib/supabase";
 import { money } from "@/lib/i18n";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
