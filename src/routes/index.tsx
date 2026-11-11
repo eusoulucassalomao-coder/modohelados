@@ -63,21 +63,21 @@ function Index() {
   return (
     <div className="min-h-screen pb-32">
       {/* top bar */}
-      <header className="sticky top-0 z-30 border-b border-border bg-background/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+      <header className="sticky top-0 z-30 border-b border-[#eadcf0] bg-[#fffaf2]/90 text-[#351044] shadow-[0_8px_30px_-24px_rgba(53,16,68,.45)] backdrop-blur-2xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2">
             <img src={LOGO} alt="Modo Açaí" className="h-9 w-9 rounded-full object-cover ring-2 ring-primary" />
             <span className="font-display text-lg font-extrabold">Modo Açaí</span>
           </div>
-          <div className="flex rounded-full border border-border bg-muted p-1 text-xs font-bold">
+          <div className="flex rounded-full border border-[#eadcf0] bg-white p-1 text-xs font-bold shadow-sm">
             {(["es", "en"] as Lang[]).map((l) => (
-              <button key={l} onClick={() => setLang(l)} className={`rounded-full px-3 py-1 uppercase transition ${lang === l ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>{l}</button>
+              <button key={l} onClick={() => setLang(l)} className={`rounded-full px-3 py-1 uppercase transition ${lang === l ? "bg-[#54166e] text-white" : "text-[#8d7596]"}`}>{l}</button>
             ))}
           </div>
         </div>
-        <nav className="no-scrollbar mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 pb-3">
+        <nav className="no-scrollbar mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
           {["deals", ...catOrder].map((c) => (
-            <a key={c} href={`#${c}`} className="whitespace-nowrap rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium hover:border-primary">
+            <a key={c} href={`#${c}`} className="whitespace-nowrap rounded-full border border-[#eadcf0] bg-white px-4 py-2 text-xs font-bold text-[#5c376b] shadow-sm transition hover:-translate-y-0.5 hover:border-[#8b36a5] hover:bg-[#f8effb]">
               {c === "deals" ? `🔥 ${L.deal}` : L.cats[c as Item["cat"]]}
             </a>
           ))}
@@ -85,26 +85,26 @@ function Index() {
       </header>
 
       {/* hero */}
-      <section className="mx-auto max-w-5xl px-4 pt-6">
+      <section className="mx-auto max-w-6xl px-4 pt-5 sm:px-6 sm:pt-8">
         <h1 className="sr-only">{L.tagline}</h1>
-        <a href="#acai" className="block overflow-hidden rounded-3xl shadow-card">
-          <img src="/images/acai-hero.webp" alt={L.tagline} className="aspect-[16/9] w-full object-cover" />
+        <a href="#acai" className="group relative block overflow-hidden rounded-[1.75rem] border border-white/60 bg-[#54166e] shadow-[0_24px_70px_-34px_rgba(53,16,68,.65)]">
+          <img src="/images/acai-hero.webp" alt={L.tagline} className="aspect-[16/9] w-full object-cover transition duration-700 group-hover:scale-[1.015]" />
         </a>
       </section>
 
       {/* deals */}
-      <section id="deals" className="mx-auto max-w-5xl scroll-mt-32 px-4 pt-10">
-        <h2 className="mb-4 flex items-center gap-2 text-2xl font-extrabold"><Flame className="text-accent" /> {L.deal}</h2>
-        <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4">
+      <section id="deals" className="mx-auto mt-9 max-w-6xl scroll-mt-32 rounded-[2rem] bg-[#431052] px-4 py-7 text-white shadow-[0_24px_65px_-38px_rgba(53,16,68,.8)] sm:px-7 sm:py-9">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-2"><div><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.25em] text-[#f8d94d]">elegidos para hoy</p><h2 className="flex items-center gap-2 font-display text-3xl font-extrabold tracking-tight sm:text-4xl"><Flame className="h-7 w-7 text-[#ffcf3d]" /> {L.deal}</h2></div><span className="rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white/75">por tiempo limitado</span></div>
+        <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
           {deals.map((it) => (
-            <button key={it.id} onClick={() => setSelectedItem(it)} className="relative w-64 shrink-0 snap-start overflow-hidden rounded-3xl bg-card-grad text-left shadow-card transition active:scale-95">
-              {it.img && <img src={it.img} alt={it.name[lang]} loading="lazy" className="h-40 w-full object-cover" />}
-              <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-extrabold text-accent-foreground">{it.old && it.old > it.price ? `-${Math.round((1 - it.price / it.old) * 100)}%` : (lang === "es" ? "OFERTA" : "DEAL")}</span>
+            <button key={it.id} onClick={() => setSelectedItem(it)} className="group relative w-[ min(82vw,19rem)] shrink-0 snap-start overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#fff8e9] text-left text-[#351044] shadow-[0_18px_38px_-24px_rgba(0,0,0,.65)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_42px_-22px_rgba(0,0,0,.6)] active:scale-[.98]">
+              {it.img && <img src={it.img} alt={it.name[lang]} loading="lazy" className="h-48 w-full object-cover transition duration-500 group-hover:scale-105" />}
+              <span className="absolute left-3 top-3 rounded-full bg-[#ffdf4f] px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-[#421052] shadow-lg">{it.old && it.old > it.price ? `-${Math.round((1 - it.price / it.old) * 100)}%` : (lang === "es" ? "OFERTA" : "DEAL")}</span>
               <div className="p-4">
                 <div className="font-display font-bold">{it.name[lang]}</div>
                 <div className="mt-1 flex items-center justify-between">
-                  <div><span className="text-lg font-extrabold text-primary">{money(it.price)}</span> {it.old != null && it.old > it.price && <s className="text-xs text-muted-foreground">{money(it.old)}</s>}</div>
-                  <span onClick={(e) => { e.stopPropagation(); add(it); }} role="button" aria-label={L.add} className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"><Plus className="h-5 w-5" /></span>
+                  <div><span className="text-xl font-black text-[#681b83]">{money(it.price)}</span> {it.old != null && it.old > it.price && <s className="text-xs text-muted-foreground">{money(it.old)}</s>}</div>
+                  <span onClick={(e) => { e.stopPropagation(); add(it); }} role="button" aria-label={L.add} className="grid h-10 w-10 place-items-center rounded-full bg-[#54166e] text-[#ffe15b] shadow-md transition group-hover:rotate-90"><Plus className="h-5 w-5" /></span>
                 </div>
               </div>
             </button>
@@ -113,9 +113,9 @@ function Index() {
       </section>
 
       {catOrder.map((c) => (
-        <section key={c} id={c} className="mx-auto max-w-5xl scroll-mt-32 px-4 pt-10">
-          <h2 className="mb-4 text-2xl font-extrabold">{L.cats[c]}</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+        <section key={c} id={c} className="mx-auto max-w-6xl scroll-mt-32 px-4 pt-12 sm:px-6 sm:pt-14">
+          <div className="mb-5 flex items-end justify-between border-b border-[#e8d9ec] pb-3"><div><p className="mb-1 text-[10px] font-extrabold uppercase tracking-[.22em] text-[#a17aaa]">descubrí tu favorito</p><h2 className="font-display text-3xl font-extrabold tracking-tight text-[#421052] sm:text-4xl">{L.cats[c]}</h2></div><span className="rounded-full bg-[#f0e4f3] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#70477e]">ver menú</span></div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:gap-4">
             {catalog.filter((m) => m.cat === c).map((it) => (
               <ItemRow key={it.id} it={it} lang={lang} qty={cart[it.id] ?? 0} onOpen={() => setSelectedItem(it)} onAdd={() => add(it)} onDec={() => inc(it.id, -1)} />
             ))}
@@ -124,14 +124,14 @@ function Index() {
       ))}
 
       {/* floating whatsapp */}
-      <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer" aria-label={L.chat} className="fixed bottom-24 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-whatsapp text-primary-foreground shadow-card">
+      <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer" aria-label={L.chat} className="fixed bottom-24 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-[#20c66b] text-white shadow-[0_12px_28px_-10px_rgba(32,198,107,.8)] transition hover:-translate-y-1 hover:scale-105">
         <MessageCircle className="h-7 w-7" />
       </a>
 
       {/* sticky cart bar */}
       {count > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-30 p-4">
-          <button key={bump} onClick={() => setOpen(true)} className="animate-pop mx-auto flex w-full max-w-md items-center justify-between rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground shadow-glow">
+        <div className="fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-[#fffaf2] via-[#fffaf2]/95 to-transparent px-4 pb-4 pt-8">
+          <button key={bump} onClick={() => setOpen(true)} className="animate-pop mx-auto flex w-full max-w-lg items-center justify-between rounded-full bg-[#54166e] px-6 py-4 font-bold text-[#ffe15b] shadow-[0_14px_35px_-12px_rgba(84,22,110,.65)] ring-1 ring-white/20 transition hover:-translate-y-0.5">
             <span className="flex items-center gap-2"><ShoppingBag className="h-5 w-5" /> {count} {L.items}</span>
             <span>{L.viewCart} · {money(total)}</span>
           </button>
@@ -154,18 +154,18 @@ function Thumb({ it, lang, className }: { it: Item; lang: Lang; className: strin
 function ItemRow({ it, lang, qty, onOpen, onAdd, onDec }: { it: Item; lang: Lang; qty: number; onOpen: () => void; onAdd: () => void; onDec: () => void }) {
   const L = t[lang];
   return (
-    <div role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(); }} className="flex cursor-pointer gap-3 rounded-3xl border border-border bg-card-grad p-3 text-left shadow-card transition hover:border-primary/60">
-      <Thumb it={it} lang={lang} className="h-24 w-24 shrink-0 rounded-2xl" />
+    <div role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(); }} className="group flex cursor-pointer gap-3 rounded-[1.5rem] border border-[#eadcf0] bg-white p-3 text-left shadow-[0_10px_30px_-24px_rgba(53,16,68,.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c49bd0] hover:shadow-[0_18px_36px_-24px_rgba(53,16,68,.5)]">
+      <Thumb it={it} lang={lang} className="h-28 w-28 shrink-0 rounded-[1.1rem] transition duration-500 group-hover:scale-[1.02]" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-start gap-2">
-          <h3 className="font-display font-bold leading-tight">{it.name[lang]}</h3>
+          <h3 className="font-display text-base font-extrabold leading-tight text-[#421052]">{it.name[lang]}</h3>
           {it.popular && <span className="shrink-0 rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold uppercase text-accent">{L.popular}</span>}
         </div>
-        <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{it.desc[lang]}</p>
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#907b98]">{it.desc[lang]}</p>
         <div className="mt-auto flex items-center justify-between pt-2">
-          <div><span className="font-extrabold text-primary">{money(it.price)}</span>{it.old && <s className="ml-1 text-xs text-muted-foreground">{money(it.old)}</s>}</div>
+          <div><span className="font-extrabold text-[#681b83]">{money(it.price)}</span>{it.old && <s className="ml-1 text-xs text-muted-foreground">{money(it.old)}</s>}</div>
           {qty === 0 ? (
-            <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="flex items-center gap-1 rounded-full bg-primary px-4 py-1.5 text-sm font-bold text-primary-foreground transition active:scale-90"><Plus className="h-4 w-4" />{L.add}</button>
+            <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="flex items-center gap-1 rounded-full bg-[#54166e] px-4 py-2 text-xs font-extrabold text-[#ffe15b] transition hover:bg-[#70208d] active:scale-90"><Plus className="h-4 w-4" />{L.add}</button>
           ) : (
             <span onClick={(e) => e.stopPropagation()}><Stepper qty={qty} onInc={onAdd} onDec={onDec} /></span>
           )}
